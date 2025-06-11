@@ -132,7 +132,11 @@ class MainApp {
 
   public run() {
     app.whenReady().then(() => {
-      electronApp.setAppUserModelId('com.electron');
+      app.setLoginItemSettings({
+        openAtLogin: true,
+        path: app.getPath('exe'),
+      });
+      electronApp.setAppUserModelId('fr.polarisdev');
       app.on('browser-window-created', (_, window) => {
         optimizer.watchWindowShortcuts(window);
       });
