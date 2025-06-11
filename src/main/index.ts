@@ -5,6 +5,7 @@ import icon from '../../resources/icon.png?asset'
 import { ConfigManager } from "./config";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
+import { spawn } from 'child_process';
 
 class MainApp {
   private appFolder: string;
@@ -49,7 +50,23 @@ class MainApp {
     });
 
     mainWindow.webContents.setWindowOpenHandler((details) => {
-      shell.openExternal(details.url);
+      // Get config for chrome path and args
+      const chromePath = this.config.get('chromeExecutablePath');
+      const chromeArgsRaw = this.config.get('chromeArgs') || '';
+      const chromeArgs = chromeArgsRaw.split(' ').filter(Boolean);
+      if (chromePath) {
+        // Launch Chrome as a child process
+        const child = spawn(chromePath, [...chromeArgs, details.url], { detached: true, stdio: 'ignore' });
+        child.unref();
+        child.on('close', () => {
+          mainWindow.show();
+          mainWindow.focus();
+          mainWindow.setFullScreen(true);
+        });
+      } else {
+        // Fallback to default browser
+        shell.openExternal(details.url);
+      }
       return { action: 'deny' };
     });
 

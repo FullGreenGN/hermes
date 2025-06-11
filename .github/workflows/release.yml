@@ -59,6 +59,10 @@ jobs:
         with:
           draft: true
           files: |
-            artifacts/**
+            artifacts/**/*.exe
+            artifacts/**/*.dmg
+            artifacts/**/*.AppImage
+            artifacts/**/*.yml
+            artifacts/**/*.blockmap
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
