@@ -10,11 +10,14 @@ interface ButtonConfig {
 function App(): React.JSX.Element {
   const [buttons, setButtons] = useState<ButtonConfig[]>([]);
   const [imgDataUrls, setImgDataUrls] = useState<{ [path: string]: string }>({});
+  const [backgroundImage, setBackgroundImage] = useState<string>("");
+  const [backgroundImageDataUrl, setBackgroundImageDataUrl] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
     window.api.getConfig().then((cfg: any) => {
       if (cfg && Array.isArray(cfg.buttons)) setButtons(cfg.buttons);
+      if (cfg && typeof cfg.backgroundImage === 'string') setBackgroundImage(cfg.backgroundImage);
     });
     // Listen for shortcut event from main process
     const handler = () => navigate('/config');
@@ -23,6 +26,17 @@ function App(): React.JSX.Element {
       window.electron?.ipcRenderer.removeListener('navigate-to-config', handler);
     };
   }, [navigate]);
+
+  useEffect(() => {
+    // Load background image as data URL when backgroundImage changes
+    if (backgroundImage) {
+      window.api.readImageAsDataUrl(backgroundImage)
+        .then((dataUrl: string) => setBackgroundImageDataUrl(dataUrl))
+        .catch(() => setBackgroundImageDataUrl(""));
+    } else {
+      setBackgroundImageDataUrl("");
+    }
+  }, [backgroundImage]);
 
   useEffect(() => {
     // Load all button images as data URLs
@@ -45,6 +59,9 @@ function App(): React.JSX.Element {
 
   return (
     <>
+      {backgroundImageDataUrl && (
+        <img src={backgroundImageDataUrl} className={"w-full h-full object-cover absolute top-0 left-0 -z-10"} alt="Background" />
+      )}
       <div className="flex flex-col items-center mt-8">
         <div className="flex flex-row flex-wrap gap-4">
           {buttons.map((btn, idx) => (
@@ -54,7 +71,7 @@ function App(): React.JSX.Element {
                 style={{ width: 128, height: 128, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 onClick={() => window.open(btn.link, '_blank')}
               >
-                <img src={imgDataUrls[btn.img] || ''} alt={btn.label} />
+                <img src={imgDataUrls[btn.img]} alt={btn.label} />
               </button>
               <span className="text-xs mt-1 text-center">{btn.label}</span>
             </div>

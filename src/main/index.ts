@@ -30,12 +30,15 @@ class MainApp {
   private createWindow(): void {
     this.initializeConfig();
     const mainWindow = new BrowserWindow({
-      width: 900,
-      height: 670,
+      width: this.config.get('windowWidth'),
+      height: this.config.get('windowHeight'),
       show: false,
+      fullscreen: this.config.get('fullscreen'),
       autoHideMenuBar: true,
       ...(process.platform === 'linux' ? { icon } : {}),
       webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: true,
         preload: join(__dirname, '../preload/index.js'),
         sandbox: false
       }
@@ -92,6 +95,12 @@ class MainApp {
       } catch (e) {
         return '';
       }
+    });
+    ipcMain.handle('select-file', async (_event, options) => {
+      const { dialog } = require('electron');
+      const result = await dialog.showOpenDialog(options);
+      if (result.canceled || !result.filePaths.length) return null;
+      return result.filePaths[0];
     });
   }
 

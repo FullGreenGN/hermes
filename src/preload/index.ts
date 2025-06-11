@@ -7,6 +7,7 @@ const api = {
   getConfig: () => ipcRenderer.invoke('get-config'),
   saveImage: (fileName: string, buffer: number[]) => ipcRenderer.invoke('save-image', fileName, buffer),
   readImageAsDataUrl: (filePath: string) => ipcRenderer.invoke('read-image-as-data-url', filePath),
+  selectFile: (options: any) => ipcRenderer.invoke('select-file', options),
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

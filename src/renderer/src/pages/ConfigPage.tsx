@@ -18,6 +18,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import Versions from "@/components/Versions";
+import {Checkbox} from "@/components/ui/checkbox";
 
 interface ButtonConfig {
   img: string;
@@ -32,12 +33,24 @@ export default function ConfigPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editIdx, setEditIdx] = useState<number | null>(null);
   const [form, setForm] = useState({ img: "", link: "", label: "" });
+  const [fullscreen, setFullscreen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(800);
+  const [windowHeight, setWindowHeight] = useState(600);
+  const [chromeExecutablePath, setChromeExecutablePath] = useState("");
+  const [chromeArgs, setChromeArgs] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const chromePathInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.api.getConfig().then((cfg: any) => {
       if (cfg && Array.isArray(cfg.buttons)) setButtons(cfg.buttons);
+      if (cfg && typeof cfg.backgroundImage === 'string') setConfigValue(cfg.backgroundImage);
+      if (cfg && typeof cfg.fullscreen === 'boolean') setFullscreen(cfg.fullscreen);
+      if (cfg && typeof cfg.windowWidth === 'number') setWindowWidth(cfg.windowWidth);
+      if (cfg && typeof cfg.windowHeight === 'number') setWindowHeight(cfg.windowHeight);
+      if (cfg && typeof cfg.chromeExecutablePath === 'string') setChromeExecutablePath(cfg.chromeExecutablePath);
+      if (cfg && typeof cfg.chromeArgs === 'string') setChromeArgs(cfg.chromeArgs);
     });
     const handler = () => navigate("/");
     window.electron?.ipcRenderer.on("navigate-to-config", handler);
@@ -46,12 +59,14 @@ export default function ConfigPage() {
     };
   }, [navigate]);
 
-  const saveButtonsToConfig = (newButtons: ButtonConfig[]) => {
+  const saveButtonsToConfig = async (newButtons: ButtonConfig[]) => {
     setButtons(newButtons);
-    window.api.saveConfig({ buttons: newButtons }).then(() => {
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    });
+    // Load existing config, merge buttons, then save
+    const cfg = await window.api.getConfig();
+    const updatedConfig = { ...cfg, buttons: newButtons };
+    await window.api.saveConfig(updatedConfig);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   };
 
   const openAddModal = () => {
@@ -82,7 +97,7 @@ export default function ConfigPage() {
     saveButtonsToConfig(buttons.filter((_, i) => i !== idx));
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleButtonImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const arrayBuffer = await file.arrayBuffer();
@@ -93,8 +108,34 @@ export default function ConfigPage() {
     setForm((f) => ({ ...f, img: localPath }));
   };
 
+  const handleBackgroundImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer);
+    const ext = file.name.split(".").pop();
+    const fileName = `background_${Date.now()}.${ext}`;
+    const localPath = await window.api.saveImage(fileName, Array.from(buffer));
+    // Load existing config, merge background image path, then save
+    const cfg = await window.api.getConfig();
+    const updatedConfig = { ...cfg, backgroundImage: localPath };
+    await window.api.saveConfig(updatedConfig);
+    setConfigValue(localPath);
+  }
+
   const handleSave = async () => {
-    await window.api.saveConfig({ configValue });
+    // Load existing config, merge background image path, fullscreen, window size, chrome path/args, then save
+    const cfg = await window.api.getConfig();
+    const updatedConfig = {
+      ...cfg,
+      backgroundImage: configValue,
+      fullscreen,
+      windowWidth,
+      windowHeight,
+      chromeExecutablePath,
+      chromeArgs,
+    };
+    await window.api.saveConfig(updatedConfig);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -129,14 +170,80 @@ export default function ConfigPage() {
             <CardTitle>Configuration</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-4">
-              <div className="mb-1">
-                <Label htmlFor="configValue">Config Value</Label>
+            <form onSubmit={(e) => { e.preventDefault(); handleSave();}} className="space-y-4">
+              <div className="space-y-1">
+                <Label>Image</Label>
                 <Input
-                  id="configValue"
-                  value={configValue}
-                  onChange={(e) => setConfigValue(e.target.value)}
-                  placeholder="Enter value"
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handleBackgroundImageUpload}
+                />
+                {form.img && <img src={form.img} alt="Preview" className="w-16 h-16 object-contain mt-2" />}
+              </div>
+              <div className="space-y-1">
+                <Label>Fullscreen</Label>
+                <Checkbox
+                  checked={fullscreen}
+                  onCheckedChange={e => e ? setFullscreen(true) : setFullscreen(false)}
+                  className="ml-2"
+                />
+              </div>
+              <div className="space-y-1 flex gap-2">
+                <div>
+                  <Label>Width</Label>
+                  <Input
+                    type="number"
+                    min={100}
+                    value={windowWidth}
+                    onChange={e => setWindowWidth(Number(e.target.value))}
+                    className="ml-2 w-24"
+                  />
+                </div>
+                <div>
+                  <Label>Height</Label>
+                  <Input
+                    type="number"
+                    min={100}
+                    value={windowHeight}
+                    onChange={e => setWindowHeight(Number(e.target.value))}
+                    className="ml-2 w-24"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label>Chrome Executable Path</Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="text"
+                    value={chromeExecutablePath}
+                    readOnly
+                    ref={chromePathInputRef}
+                    placeholder="/path/to/chrome"
+                  />
+                  <Button
+                    type="button"
+                    onClick={async () => {
+                      // Use Electron's dialog to select a file
+                      const filePath = await window.api.selectFile({
+                        title: 'Select Chrome Executable',
+                        properties: ['openFile'],
+                        filters: [
+                          { name: 'Executables', extensions: ['exe', 'app', 'bin', ''] },
+                        ],
+                      });
+                      if (filePath) setChromeExecutablePath(filePath);
+                    }}
+                  >Browse</Button>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label>Chrome Args (space separated)</Label>
+                <Input
+                  type="text"
+                  value={chromeArgs}
+                  onChange={e => setChromeArgs(e.target.value)}
+                  placeholder="--incognito --disable-extensions"
                 />
               </div>
               <Button type="submit" className="w-full">Save</Button>
@@ -195,7 +302,7 @@ export default function ConfigPage() {
                   type="file"
                   accept="image/*"
                   ref={fileInputRef}
-                  onChange={handleImageUpload}
+                  onChange={handleButtonImageUpload}
                 />
                 {form.img && <img src={form.img} alt="Preview" className="w-16 h-16 object-contain mt-2" />}
               </div>

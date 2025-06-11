@@ -8,6 +8,7 @@ declare global {
       getConfig: () => Promise<any>;
       saveImage: (filePath: string, data: any) => Promise<string>;
       readImageAsDataUrl: (filePath: string) => Promise<string>;
+      selectFile: (options: any) => Promise<string | null>;
     }
   }
 }
