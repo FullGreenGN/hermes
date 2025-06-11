@@ -29,6 +29,7 @@ jobs:
         run: npm run build
 
       - name: Package app
+        shell: bash
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
             npm run build:linux
