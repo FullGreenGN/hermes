@@ -63,15 +63,15 @@ function App(): React.JSX.Element {
         <img src={backgroundImageDataUrl} className={"w-full h-full object-cover absolute top-0 left-0 -z-10"} alt="Background" />
       )}
       <div className="flex flex-col items-center mt-8">
-        <div className="flex flex-row flex-wrap gap-4">
+        <div className="flex flex-grid gap-4 justify-center items-center flex-wrap max-w-6xl absolute left-1/2 -translate-x-1/2" style={{ bottom: '2rem', position: 'fixed' }}>
           {buttons.map((btn, idx) => (
             <div key={idx} className="flex flex-col items-center">
               <button
                 className="border"
-                style={{ width: 128, height: 128, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ width: 256, height: 256, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 onClick={() => window.open(btn.link, '_blank')}
               >
-                <img src={imgDataUrls[btn.img]} alt={btn.label} />
+                <img src={imgDataUrls[btn.img]} alt={btn.label} className={"w-full h-full rounded-lg"} />
               </button>
               <span className="text-xs mt-1 text-center">{btn.label}</span>
             </div>
