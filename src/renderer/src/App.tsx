@@ -68,7 +68,7 @@ function App(): React.JSX.Element {
             <div key={idx} className="flex flex-col items-center">
               <button
                 className="border"
-                style={{ width: 256, height: 256, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ width: 168, height: 168, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 onClick={() => window.open(btn.link, '_blank')}
               >
                 <img src={imgDataUrls[btn.img]} alt={btn.label} className={"w-full h-full rounded-lg"} />

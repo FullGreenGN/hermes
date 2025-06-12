@@ -1,7 +1,7 @@
 {
   "name": "hermes",
-  "version": "0.0.3",
-  "description": "An Electron application with React and TypeScript",
+  "version": "0.0.4",
+  "description": "Hermes",
   "main": "./out/main/index.js",
   "author": "polarisdev.fr",
   "homepage": "https://polarisdev.fr",
