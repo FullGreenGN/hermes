@@ -25,15 +25,21 @@ jobs:
           node-version: 20
           cache: 'npm'
 
+      # Fix for Rollup platform-specific binaries issue
       - name: Install dependencies
         shell: bash
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            # Fix for Rollup Linux issue
+            # Remove node_modules and package-lock.json to avoid optional dependency issues on Linux
             rm -rf node_modules package-lock.json
             npm install
-          else
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            # Windows requires different handling for removing files
+            rm -rf node_modules package-lock.json || true
             npm install
+          else
+            # macOS - regular install should work
+            npm ci
           fi
 
       - name: Build app

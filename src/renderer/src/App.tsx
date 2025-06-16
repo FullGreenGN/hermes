@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { notify } from './components/ToastProvider';
+import { Skeleton } from './components/ui/skeleton';
 
 // Define types for buttons
 interface ButtonConfig {
@@ -158,7 +159,7 @@ function App(): React.JSX.Element {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-xl">Loading...</div>
+        <Skeleton className="w-full h-full" />
       </div>
     );
   }

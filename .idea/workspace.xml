@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: add toast notifications for error handling and update availability in App component" />
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="chore: update .gitignore to include package-lock.json and modify workspace.xml task details">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/release.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/release.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/src/components/ui/skeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/components/ui/skeleton.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,7 +99,7 @@
       <workItem from="1749646922070" duration="76000" />
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
-      <workItem from="1750053088979" duration="6896000" />
+      <workItem from="1750053088979" duration="7254000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -281,7 +285,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750060613659</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="chore: update .gitignore to include package-lock.json and modify workspace.xml task details">
+      <option name="closed" value="true" />
+      <created>1750060780005</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1750060780005</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -308,6 +320,7 @@
     <MESSAGE value="fix: streamline dependency installation in release workflow and update workspace.xml task details" />
     <MESSAGE value="fix: simplify dependency installation step in release workflow" />
     <MESSAGE value="feat: add toast notifications for error handling and update availability in App component" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add toast notifications for error handling and update availability in App component" />
+    <MESSAGE value="chore: update .gitignore to include package-lock.json and modify workspace.xml task details" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: update .gitignore to include package-lock.json and modify workspace.xml task details" />
   </component>
 </project>
