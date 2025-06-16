@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="bump version to 0.0.5; update work item durations and task summaries in workspace.xml">
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="bump version to 0.0.6; update README with new features and installation instructions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +93,7 @@
       <workItem from="1749646922070" duration="76000" />
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
-      <workItem from="1750053088979" duration="1639000" />
+      <workItem from="1750053088979" duration="2541000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -190,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750054466296</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="bump version to 0.0.6; update README with new features and installation instructions">
+      <option name="closed" value="true" />
+      <created>1750054789000</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1750054789000</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,6 +214,7 @@
     <MESSAGE value="update image loading logic in ConfigPage component; adjust layout and work item durations" />
     <MESSAGE value="implement auto updater functionality; add event listeners for update availability, progress, and download completion" />
     <MESSAGE value="bump version to 0.0.5; update work item durations and task summaries in workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="bump version to 0.0.5; update work item durations and task summaries in workspace.xml" />
+    <MESSAGE value="bump version to 0.0.6; update README with new features and installation instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="bump version to 0.0.6; update README with new features and installation instructions" />
   </component>
 </project>

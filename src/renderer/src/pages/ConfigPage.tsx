@@ -146,6 +146,8 @@ export default function ConfigPage() {
   useEffect(() => {
     // Load all button images as data URLs
     const loadImages = async () => {
+      if (buttons.length === 0) return;
+
       const entries = await Promise.all(
         buttons.map(async (btn) => {
           if (!btn.img) return [btn.img, ''];
@@ -159,11 +161,8 @@ export default function ConfigPage() {
       );
       setImgDataUrls(Object.fromEntries(entries));
     };
-    if (buttons.length > 0) loadImages().then(() => {
-      // Ensure all images are loaded before rendering
-      const allLoaded = Object.keys(imgDataUrls).length === buttons.length;
-      if (allLoaded) setImgDataUrls(imgDataUrls);
-    })
+
+    loadImages();
   }, [buttons]);
 
   return (

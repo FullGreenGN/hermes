@@ -41,6 +41,8 @@ function App(): React.JSX.Element {
   useEffect(() => {
     // Load all button images as data URLs
     const loadImages = async () => {
+      if (buttons.length === 0) return;
+
       const entries = await Promise.all(
         buttons.map(async (btn) => {
           if (!btn.img) return [btn.img, ''];
@@ -54,7 +56,8 @@ function App(): React.JSX.Element {
       );
       setImgDataUrls(Object.fromEntries(entries));
     };
-    if (buttons.length > 0) loadImages();
+
+    loadImages();
   }, [buttons]);
 
   return (

@@ -1,12 +1,12 @@
-import { app, shell, BrowserWindow, ipcMain, globalShortcut } from 'electron'
-import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import { autoUpdater } from 'electron-updater'
+import {app, BrowserWindow, globalShortcut, ipcMain, shell} from 'electron'
+import {join} from 'path'
+import {electronApp, is, optimizer} from '@electron-toolkit/utils'
+import {autoUpdater} from 'electron-updater'
 import icon from '../../resources/icon.png?asset'
-import { ConfigManager } from "./config";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { writeFile } from "node:fs/promises";
-import { spawn } from 'child_process';
+import {ConfigManager} from "./config";
+import {existsSync, mkdirSync, writeFileSync} from "node:fs";
+import {writeFile} from "node:fs/promises";
+import {spawn} from 'child_process';
 
 class MainApp {
   private appFolder: string;
@@ -84,9 +84,9 @@ class MainApp {
       width: this.config.get('windowWidth'),
       height: this.config.get('windowHeight'),
       show: false,
-      fullscreen: this.config.get('fullscreen'),
+      fullscreen: true,
       autoHideMenuBar: true,
-      ...(process.platform === 'linux' ? { icon } : {}),
+      ...(process.platform === 'linux' ? {icon} : {}),
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: true,
@@ -106,7 +106,7 @@ class MainApp {
       const chromeArgs = chromeArgsRaw.split(' ').filter(Boolean);
       if (chromePath) {
         // Launch Chrome as a child process
-        const child = spawn(chromePath, [...chromeArgs, details.url], { detached: true, stdio: 'ignore' });
+        const child = spawn(chromePath, [...chromeArgs, details.url], {detached: true, stdio: 'ignore'});
         child.unref();
         child.on('close', () => {
           if (this.mainWindow) {
@@ -119,39 +119,57 @@ class MainApp {
         // Fallback to default browser
         shell.openExternal(details.url);
       }
-      return { action: 'deny' };
+      return {action: 'deny'};
     });
 
     if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
       this.mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
     } else {
-      this.mainWindow.loadFile(join(__dirname, '../renderer/index.html'), { hash: '/' });
+      this.mainWindow.loadFile(join(__dirname, '../renderer/index.html'), {hash: '/'});
     }
   }
 
   private registerIpcHandlers() {
     ipcMain.on('ping', () => console.log('pong'));
-    ipcMain.on('', () => null);
+
     ipcMain.handle('save-config', async (_event, config) => {
-      if (!existsSync(this.appFolder)) {
-        mkdirSync(this.appFolder, { recursive: true });
+      try {
+        if (!existsSync(this.appFolder)) {
+          mkdirSync(this.appFolder, { recursive: true });
+        }
+        const configPath = join(this.appFolder, 'config.json');
+        writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
+        return true;
+      } catch (error) {
+        console.error('Failed to save config:', error);
+        return false;
       }
-      const configPath = join(this.appFolder, 'config.json');
-      writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
-      return true;
     });
+
     ipcMain.handle('get-config', async () => {
-      await this.config.init();
-      return this.config.getConfig();
-    });
-    ipcMain.handle('save-image', async (_event, fileName: string, buffer: number[]) => {
-      if (!existsSync(this.uploadsFolder )) {
-        mkdirSync(this.uploadsFolder, { recursive: true });
+      try {
+        await this.config.init();
+        return this.config.getConfig();
+      } catch (error) {
+        console.error('Failed to get config:', error);
+        return {};
       }
-      const filePath = join(this.uploadsFolder, fileName);
-      await writeFile(filePath, Buffer.from(buffer));
-      return filePath;
     });
+
+    ipcMain.handle('save-image', async (_event, fileName: string, buffer: number[]) => {
+      try {
+        if (!existsSync(this.uploadsFolder)) {
+          mkdirSync(this.uploadsFolder, { recursive: true });
+        }
+        const filePath = join(this.uploadsFolder, fileName);
+        await writeFile(filePath, Buffer.from(buffer));
+        return filePath;
+      } catch (error) {
+        console.error('Failed to save image:', error);
+        return '';
+      }
+    });
+
     ipcMain.handle('read-image-as-data-url', async (_event, filePath: string) => {
       try {
         const fs = await import('fs/promises');
@@ -159,17 +177,23 @@ class MainApp {
         const ext = path.extname(filePath).slice(1);
         const data = await fs.readFile(filePath);
         const base64 = data.toString('base64');
-        const dataUrl = `data:image/${ext};base64,${base64}`;
-        return dataUrl;
-      } catch (e) {
+        return `data:image/${ext};base64,${base64}`;
+      } catch (error) {
+        console.error('Failed to read image:', error);
         return '';
       }
     });
+
     ipcMain.handle('select-file', async (_event, options) => {
-      const { dialog } = require('electron');
-      const result = await dialog.showOpenDialog(options);
-      if (result.canceled || !result.filePaths.length) return null;
-      return result.filePaths[0];
+      try {
+        const { dialog } = require('electron');
+        const result = await dialog.showOpenDialog(options);
+        if (result.canceled || !result.filePaths.length) return null;
+        return result.filePaths[0];
+      } catch (error) {
+        console.error('Failed to select file:', error);
+        return null;
+      }
     });
   }
 
@@ -179,7 +203,7 @@ class MainApp {
       if (allWindows.length > 0) {
         allWindows[0].webContents.send('navigate-to-config');
       }
-    })
+    });
   }
 
   public run() {
