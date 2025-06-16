@@ -159,13 +159,17 @@ export default function ConfigPage() {
       );
       setImgDataUrls(Object.fromEntries(entries));
     };
-    if (buttons.length > 0) loadImages();
+    if (buttons.length > 0) loadImages().then(() => {
+      // Ensure all images are loaded before rendering
+      const allLoaded = Object.keys(imgDataUrls).length === buttons.length;
+      if (allLoaded) setImgDataUrls(imgDataUrls);
+    })
   }, [buttons]);
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <div className="w-full max-w-lg">
-        <Card className="w-full">
+    <div className="w-screen h-screen overflow-auto flex items-center justify-center">
+      <div className="w-full py-8 px-4">
+        <Card className="w-full mb-4">
           <CardHeader>
             <CardTitle>Configuration</CardTitle>
           </CardHeader>

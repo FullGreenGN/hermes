@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="update layout and styling for buttons in App component; adjust work item durations">
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="update layout and styling for buttons in App component; increment version to 0.0.4">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +91,8 @@
       <workItem from="1749623428095" duration="8777000" />
       <workItem from="1749646922070" duration="76000" />
       <workItem from="1749712103146" duration="101000" />
-      <workItem from="1749712652585" duration="1118000" />
+      <workItem from="1749712652585" duration="1723000" />
+      <workItem from="1750053088979" duration="799000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -157,7 +158,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749713321268</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="update layout and styling for buttons in App component; increment version to 0.0.4">
+      <option name="closed" value="true" />
+      <created>1749714256959</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1749714256959</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +177,7 @@
     <MESSAGE value="update release configuration and adjust work item duration" />
     <MESSAGE value="update release configuration and adjust application identifiers" />
     <MESSAGE value="update layout and styling for buttons in App component; adjust work item durations" />
-    <option name="LAST_COMMIT_MESSAGE" value="update layout and styling for buttons in App component; adjust work item durations" />
+    <MESSAGE value="update layout and styling for buttons in App component; increment version to 0.0.4" />
+    <option name="LAST_COMMIT_MESSAGE" value="update layout and styling for buttons in App component; increment version to 0.0.4" />
   </component>
 </project>
