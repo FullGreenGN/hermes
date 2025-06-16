@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="bump version to 0.0.6; update README with new features and installation instructions">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" afterDir="false" />
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="refactor image loading logic in App and ConfigPage components; improve error handling in IPC methods">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +93,7 @@
       <workItem from="1749646922070" duration="76000" />
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
-      <workItem from="1750053088979" duration="2541000" />
+      <workItem from="1750053088979" duration="2759000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -199,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750054789000</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="refactor image loading logic in App and ConfigPage components; improve error handling in IPC methods">
+      <option name="closed" value="true" />
+      <created>1750055713385</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1750055713385</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,6 +223,8 @@
     <MESSAGE value="implement auto updater functionality; add event listeners for update availability, progress, and download completion" />
     <MESSAGE value="bump version to 0.0.5; update work item durations and task summaries in workspace.xml" />
     <MESSAGE value="bump version to 0.0.6; update README with new features and installation instructions" />
-    <option name="LAST_COMMIT_MESSAGE" value="bump version to 0.0.6; update README with new features and installation instructions" />
+    <MESSAGE value="refactor image loading logic in App and ConfigPage components; simplify conditions and improve readability" />
+    <MESSAGE value="refactor image loading logic in App and ConfigPage components; improve error handling in IPC methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor image loading logic in App and ConfigPage components; improve error handling in IPC methods" />
   </component>
 </project>
