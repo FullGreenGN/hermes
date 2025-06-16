@@ -26,14 +26,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            # Fix for Rollup Linux issue
-            rm -rf node_modules package-lock.json
-            npm install
-          else
-            npm ci
-          fi
+        run: rm -rf node_modules package-lock.json && npm install
 
       - name: Build app
         run: npm run build

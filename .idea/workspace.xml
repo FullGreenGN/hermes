@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="chore: update yarn.lock to remove unused dependencies and adjust version ranges">
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: integrate react-hot-toast for user notifications in ConfigPage">
       <change beforePath="$PROJECT_DIR$/.github/workflows/release.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/release.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/src/pages/ConfigPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +98,7 @@
       <workItem from="1749646922070" duration="76000" />
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
-      <workItem from="1750053088979" duration="5995000" />
+      <workItem from="1750053088979" duration="6454000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -257,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750058926246</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="feat: integrate react-hot-toast for user notifications in ConfigPage">
+      <option name="closed" value="true" />
+      <created>1750060121782</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1750060121782</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,6 +283,7 @@
     <MESSAGE value="fix: handle undefined chromeArgs and update workspace.xml with new task details" />
     <MESSAGE value="fix: handle undefined chromeArgs and update package.json with new dependencies" />
     <MESSAGE value="chore: update yarn.lock to remove unused dependencies and adjust version ranges" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: update yarn.lock to remove unused dependencies and adjust version ranges" />
+    <MESSAGE value="feat: integrate react-hot-toast for user notifications in ConfigPage" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: integrate react-hot-toast for user notifications in ConfigPage" />
   </component>
 </project>
