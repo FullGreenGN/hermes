@@ -112,11 +112,11 @@ class MainApp {
         // Get config for chrome path and args
         const chromePath = this.config.get('chromeExecutablePath', '')
         const chromeArgsRaw = this.config.get('chromeArgs', '')
-        const chromeArgs = chromeArgsRaw.split(' ').filter(Boolean)
+        const chromeArgs = chromeArgsRaw?.split(' ').filter(Boolean)
 
         if (chromePath) {
           // Launch Chrome as a child process
-          const child = spawn(chromePath, [...chromeArgs, details.url], { detached: true, stdio: 'ignore' })
+          const child = spawn(chromePath, [...(chromeArgs ?? []), details.url], { detached: true, stdio: 'ignore' })
           child.unref()
           child.on('error', (err) => {
             console.error('Failed to spawn Chrome:', err)
