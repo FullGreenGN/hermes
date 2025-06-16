@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import {
   Card,
   CardContent,
@@ -18,42 +18,106 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import Versions from "@/components/Versions";
-import {Checkbox} from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 
+// Define types for button configuration
 interface ButtonConfig {
   img: string;
   link: string;
   label: string;
 }
 
+// Form error interface
+interface FormErrors {
+  img?: string;
+  link?: string;
+  label?: string;
+}
+
 export default function ConfigPage() {
-  const [configValue, setConfigValue] = useState("");
+  // Basic configuration state
+  const [backgroundImage, setBackgroundImage] = useState("");
   const [saved, setSaved] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Button configuration state
   const [buttons, setButtons] = useState<ButtonConfig[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editIdx, setEditIdx] = useState<number | null>(null);
-  const [form, setForm] = useState({ img: "", link: "", label: "" });
+  const [form, setForm] = useState<ButtonConfig>({ img: "", link: "", label: "" });
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+
+  // Window configuration state
   const [fullscreen, setFullscreen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(800);
   const [windowHeight, setWindowHeight] = useState(600);
+
+  // Chrome configuration state
   const [chromeExecutablePath, setChromeExecutablePath] = useState("");
   const [chromeArgs, setChromeArgs] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Image preview state
+  const [imgDataUrls, setImgDataUrls] = useState<{ [path: string]: string }>({});
+
+  // Refs for file inputs
+  const buttonImageInputRef = useRef<HTMLInputElement>(null);
+  const backgroundImageInputRef = useRef<HTMLInputElement>(null);
   const chromePathInputRef = useRef<HTMLInputElement>(null);
+
   const navigate = useNavigate();
 
+  // Load configuration on component mount
   useEffect(() => {
-    window.api.getConfig().then((cfg: any) => {
-      if (cfg && Array.isArray(cfg.buttons)) setButtons(cfg.buttons);
-      if (cfg && typeof cfg.backgroundImage === 'string') setConfigValue(cfg.backgroundImage);
-      if (cfg && typeof cfg.fullscreen === 'boolean') setFullscreen(cfg.fullscreen);
-      if (cfg && typeof cfg.windowWidth === 'number') setWindowWidth(cfg.windowWidth);
-      if (cfg && typeof cfg.windowHeight === 'number') setWindowHeight(cfg.windowHeight);
-      if (cfg && typeof cfg.chromeExecutablePath === 'string') setChromeExecutablePath(cfg.chromeExecutablePath);
-      if (cfg && typeof cfg.chromeArgs === 'string') setChromeArgs(cfg.chromeArgs);
-    });
+    const loadConfig = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const cfg = await window.api.getConfig();
+
+        // Set button configuration
+        if (cfg && Array.isArray(cfg.buttons)) {
+          setButtons(cfg.buttons);
+        }
+
+        // Set background image
+        if (cfg && typeof cfg.backgroundImage === 'string') {
+          setBackgroundImage(cfg.backgroundImage);
+        }
+
+        // Set window configuration
+        if (cfg && typeof cfg.fullscreen === 'boolean') {
+          setFullscreen(cfg.fullscreen);
+        }
+        if (cfg && typeof cfg.windowWidth === 'number') {
+          setWindowWidth(cfg.windowWidth);
+        }
+        if (cfg && typeof cfg.windowHeight === 'number') {
+          setWindowHeight(cfg.windowHeight);
+        }
+
+        // Set Chrome configuration
+        if (cfg && typeof cfg.chromeExecutablePath === 'string') {
+          setChromeExecutablePath(cfg.chromeExecutablePath);
+        }
+        if (cfg && typeof cfg.chromeArgs === 'string') {
+          setChromeArgs(cfg.chromeArgs);
+        }
+      } catch (err) {
+        console.error('Failed to load config:', err);
+        setError('Failed to load configuration');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadConfig();
+
+    // Setup navigation handler
     const handler = () => navigate("/");
     window.electron?.ipcRenderer.on("navigate-to-config", handler);
+
     return () => {
       window.electron?.ipcRenderer.removeListener("navigate-to-config", handler);
     };
@@ -83,13 +147,42 @@ export default function ConfigPage() {
 
   const closeModal = () => setModalOpen(false);
 
+  // Form validation for the button modal
+  const validateForm = (): boolean => {
+    const errors: FormErrors = {};
+
+    if (!form.label || form.label.trim() === "") {
+      errors.label = "Label is required";
+    }
+
+    if (!form.link || form.link.trim() === "") {
+      errors.link = "Link is required";
+    } else if (!/^https?:\/\//.test(form.link)) {
+      errors.link = "Link must start with http:// or https://";
+    }
+
+    if (!form.img || form.img.trim() === "") {
+      errors.img = "Image is required";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleModalSave = () => {
-    if (form.img && form.link && form.label) {
-      const newButtons = editIdx === null
-        ? [...buttons, form]
-        : buttons.map((b, i) => (i === editIdx ? form : b));
-      saveButtonsToConfig(newButtons);
-      setModalOpen(false);
+    if (validateForm()) {
+      try {
+        const newButtons = editIdx === null
+          ? [...buttons, form]
+          : buttons.map((b, i) => (i === editIdx ? form : b));
+
+        saveButtonsToConfig(newButtons);
+        setModalOpen(false);
+      } catch (err) {
+        console.error('Failed to save button:', err);
+        setError('Failed to save button');
+        setTimeout(() => setError(null), 3000);
+      }
     }
   };
 
@@ -120,29 +213,49 @@ export default function ConfigPage() {
     const cfg = await window.api.getConfig();
     const updatedConfig = { ...cfg, backgroundImage: localPath };
     await window.api.saveConfig(updatedConfig);
-    setConfigValue(localPath);
+    setBackgroundImage(localPath);
   }
 
-  const handleSave = async () => {
-    // Load existing config, merge background image path, fullscreen, window size, chrome path/args, then save
-    const cfg = await window.api.getConfig();
-    const updatedConfig = {
-      ...cfg,
-      backgroundImage: configValue,
-      fullscreen,
-      windowWidth,
-      windowHeight,
-      chromeExecutablePath,
-      chromeArgs,
-    };
-    await window.api.saveConfig(updatedConfig);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const handleSave = async (e: FormEvent) => {
+    e.preventDefault();
+
+    try {
+      // Validate window dimensions
+      if (windowWidth < 100 || windowHeight < 100) {
+        setError("Window dimensions must be at least 100px");
+        setTimeout(() => setError(null), 3000);
+        return;
+      }
+
+      // Load existing config, merge settings, then save
+      const cfg = await window.api.getConfig();
+      const updatedConfig: any = {
+        ...cfg,
+        backgroundImage,
+        fullscreen,
+        windowWidth,
+        windowHeight,
+        chromeExecutablePath,
+        chromeArgs,
+      };
+
+      const success = await window.api.saveConfig(updatedConfig);
+
+      if (success) {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+      } else {
+        setError("Failed to save configuration");
+        setTimeout(() => setError(null), 3000);
+      }
+    } catch (err) {
+      console.error('Failed to save configuration:', err);
+      setError("Failed to save configuration");
+      setTimeout(() => setError(null), 3000);
+    }
   };
 
   // Helper to load image as data URL from main process
-  const [imgDataUrls, setImgDataUrls] = useState<{ [path: string]: string }>({});
-
   useEffect(() => {
     // Load all button images as data URLs
     const loadImages = async () => {
@@ -165,6 +278,29 @@ export default function ConfigPage() {
     loadImages();
   }, [buttons]);
 
+  if (isLoading) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg">Loading configuration...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-red-600">{error}</p>
+          <Button variant="secondary" onClick={() => window.location.reload()}>
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-screen h-screen overflow-auto flex items-center justify-center">
       <div className="w-full py-8 px-4">
@@ -173,13 +309,13 @@ export default function ConfigPage() {
             <CardTitle>Configuration</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <form onSubmit={(e) => { e.preventDefault(); handleSave();}} className="space-y-4">
+            <form onSubmit={(e) => { e.preventDefault(); handleSave(e);}} className="space-y-4">
               <div className="space-y-1">
                 <Label>Image</Label>
                 <Input
                   type="file"
                   accept="image/*"
-                  ref={fileInputRef}
+                  ref={backgroundImageInputRef}
                   onChange={handleBackgroundImageUpload}
                 />
                 {form.img && <img src={form.img} alt="Preview" className="w-16 h-16 object-contain mt-2" />}
@@ -298,16 +434,18 @@ export default function ConfigPage() {
                   onChange={(e) => setForm({ ...form, label: e.target.value })}
                   placeholder="Label"
                 />
+                {formErrors.label && <p className="text-red-600 text-sm">{formErrors.label}</p>}
               </div>
               <div className="space-y-1">
                 <Label>Image</Label>
                 <Input
                   type="file"
                   accept="image/*"
-                  ref={fileInputRef}
+                  ref={buttonImageInputRef}
                   onChange={handleButtonImageUpload}
                 />
                 {form.img && <img src={form.img} alt="Preview" className="w-16 h-16 object-contain mt-2" />}
+                {formErrors.img && <p className="text-red-600 text-sm">{formErrors.img}</p>}
               </div>
               <div className="space-y-1">
                 <Label>Link</Label>
@@ -316,6 +454,7 @@ export default function ConfigPage() {
                   onChange={(e) => setForm({ ...form, link: e.target.value })}
                   placeholder="https://..."
                 />
+                {formErrors.link && <p className="text-red-600 text-sm">{formErrors.link}</p>}
               </div>
             </div>
             <DialogFooter>
