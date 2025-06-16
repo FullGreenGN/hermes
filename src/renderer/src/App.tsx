@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { notify } from './components/ToastProvider';
-import { Skeleton } from './components/ui/skeleton';
 
 // Define types for buttons
 interface ButtonConfig {
@@ -159,7 +158,7 @@ function App(): React.JSX.Element {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Skeleton className="w-full h-full" />
+        <div className="text-xl">Loading...</div>
       </div>
     );
   }
@@ -219,7 +218,7 @@ function App(): React.JSX.Element {
             buttons.map((btn, idx) => (
               <div key={idx} className="flex flex-col items-center">
                 <button
-                  className="border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+                  className=""
                   style={{ width: 168, height: 168, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   onClick={() => handleOpenLink(btn.link, btn.label)}
                   aria-label={btn.label}
@@ -234,7 +233,6 @@ function App(): React.JSX.Element {
                     }}
                   />
                 </button>
-                <span className="text-sm mt-1 text-center font-medium">{btn.label}</span>
               </div>
             ))
           )}
