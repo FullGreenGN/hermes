@@ -1,12 +1,12 @@
-name: Build and Draft Release
+name: Build and Release
 
 on:
   push:
     tags:
       - 'v*.*.*'
     branches:
-      - '**'
-      -
+      - 'main'
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -16,20 +16,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build app
         run: npm run build
 
-      - name: Package app
+      - name: Build app for distribution
         shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
             npm run build:linux
@@ -43,26 +48,33 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-${{ matrix.os }}
-          path: dist/
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.dmg
+            dist/*.exe
+            dist/latest*.yml
+            dist/*.blockmap
+            dist/*.zip
+          if-no-files-found: ignore
 
   release:
     needs: build
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - name: Download all build artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
 
-      - name: Create Draft Release
-        uses: softprops/action-gh-release@v2
+      - name: List downloaded files
+        run: ls -R artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
           draft: true
-          files: |
-            artifacts/**/*.exe
-            artifacts/**/*.dmg
-            artifacts/**/*.AppImage
-            artifacts/**/*.yml
-            artifacts/**/*.blockmap
+          files: artifacts/**/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

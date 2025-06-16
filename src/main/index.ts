@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { autoUpdater } from 'electron-updater'
 import icon from '../../resources/icon.png?asset'
 import { ConfigManager } from "./config";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
@@ -11,6 +12,7 @@ class MainApp {
   private appFolder: string;
   private uploadsFolder: string;
   private config: ConfigManager;
+  private mainWindow: BrowserWindow | null = null;
 
   constructor() {
     this.appFolder = app.getPath('userData');
@@ -28,9 +30,57 @@ class MainApp {
     }
   }
 
+  private setupAutoUpdater() {
+    // Configure auto updater
+    autoUpdater.logger = console;
+    autoUpdater.autoDownload = true;
+    autoUpdater.autoInstallOnAppQuit = true;
+
+    // Auto updater events
+    autoUpdater.on('checking-for-update', () => {
+      console.log('Checking for updates...');
+    });
+
+    autoUpdater.on('update-available', (info) => {
+      console.log('Update available:', info);
+      if (this.mainWindow) {
+        this.mainWindow.webContents.send('update-available', info);
+      }
+    });
+
+    autoUpdater.on('update-not-available', (info) => {
+      console.log('Update not available:', info);
+    });
+
+    autoUpdater.on('download-progress', (progressObj) => {
+      console.log(`Download progress: ${progressObj.percent}%`);
+      if (this.mainWindow) {
+        this.mainWindow.webContents.send('update-progress', progressObj);
+      }
+    });
+
+    autoUpdater.on('update-downloaded', (info) => {
+      console.log('Update downloaded:', info);
+      if (this.mainWindow) {
+        this.mainWindow.webContents.send('update-downloaded', info);
+      }
+    });
+
+    autoUpdater.on('error', (error) => {
+      console.error('Auto updater error:', error);
+    });
+
+    // Check for updates
+    if (!is.dev) {
+      setTimeout(() => {
+        autoUpdater.checkForUpdates();
+      }, 3000); // Check after 3 seconds to ensure app is fully loaded
+    }
+  }
+
   private createWindow(): void {
     this.initializeConfig();
-    const mainWindow = new BrowserWindow({
+    this.mainWindow = new BrowserWindow({
       width: this.config.get('windowWidth'),
       height: this.config.get('windowHeight'),
       show: false,
@@ -45,11 +95,11 @@ class MainApp {
       }
     });
 
-    mainWindow.on('ready-to-show', () => {
-      mainWindow.show();
+    this.mainWindow.on('ready-to-show', () => {
+      this.mainWindow?.show();
     });
 
-    mainWindow.webContents.setWindowOpenHandler((details) => {
+    this.mainWindow.webContents.setWindowOpenHandler((details) => {
       // Get config for chrome path and args
       const chromePath = this.config.get('chromeExecutablePath');
       const chromeArgsRaw = this.config.get('chromeArgs') || '';
@@ -59,9 +109,11 @@ class MainApp {
         const child = spawn(chromePath, [...chromeArgs, details.url], { detached: true, stdio: 'ignore' });
         child.unref();
         child.on('close', () => {
-          mainWindow.show();
-          mainWindow.focus();
-          mainWindow.setFullScreen(true);
+          if (this.mainWindow) {
+            this.mainWindow.show();
+            this.mainWindow.focus();
+            this.mainWindow.setFullScreen(true);
+          }
         });
       } else {
         // Fallback to default browser
@@ -71,9 +123,9 @@ class MainApp {
     });
 
     if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-      mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
+      this.mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
     } else {
-      mainWindow.loadFile(join(__dirname, '../renderer/index.html'), { hash: '/' });
+      this.mainWindow.loadFile(join(__dirname, '../renderer/index.html'), { hash: '/' });
     }
   }
 
@@ -141,6 +193,7 @@ class MainApp {
         optimizer.watchWindowShortcuts(window);
       });
       this.createWindow();
+      this.setupAutoUpdater();
       this.registerShortcuts();
       app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) this.createWindow();

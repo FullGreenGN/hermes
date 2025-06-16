@@ -8,6 +8,16 @@ const api = {
   saveImage: (fileName: string, buffer: number[]) => ipcRenderer.invoke('save-image', fileName, buffer),
   readImageAsDataUrl: (filePath: string) => ipcRenderer.invoke('read-image-as-data-url', filePath),
   selectFile: (options: any) => ipcRenderer.invoke('select-file', options),
+  // Auto update listeners
+  onUpdateAvailable: (callback: (info: any) => void) => {
+    ipcRenderer.on('update-available', (_event, info) => callback(info));
+  },
+  onUpdateProgress: (callback: (progressObj: any) => void) => {
+    ipcRenderer.on('update-progress', (_event, progressObj) => callback(progressObj));
+  },
+  onUpdateDownloaded: (callback: (info: any) => void) => {
+    ipcRenderer.on('update-downloaded', (_event, info) => callback(info));
+  }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

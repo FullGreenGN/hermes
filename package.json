@@ -4,6 +4,7 @@
   "description": "Hermes",
   "main": "./out/main/index.js",
   "author": "polarisdev.fr",
+  "repository": "https://github.com/fullgreengn/hermes",
   "homepage": "https://polarisdev.fr",
   "scripts": {
     "format": "prettier --write .",
@@ -32,7 +33,7 @@
     "@tailwindcss/vite": "^4.1.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "electron-updater": "^6.3.9",
+    "electron-updater": "^6.6.2",
     "lucide-react": "^0.513.0",
     "postcss": "^8.5.4",
     "react-router-dom": "^7.6.2",
