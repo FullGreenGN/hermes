@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: integrate react-hot-toast for user notifications in ConfigPage">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/release.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/release.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: add toast notifications for error handling and update availability in App component" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,7 +95,7 @@
       <workItem from="1749646922070" duration="76000" />
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
-      <workItem from="1750053088979" duration="6454000" />
+      <workItem from="1750053088979" duration="6896000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -260,7 +257,31 @@
       <option name="project" value="LOCAL" />
       <updated>1750060121782</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="fix: streamline dependency installation in release workflow and update workspace.xml task details">
+      <option name="closed" value="true" />
+      <created>1750060264003</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1750060264003</updated>
+    </task>
+    <task id="LOCAL-00022" summary="fix: simplify dependency installation step in release workflow">
+      <option name="closed" value="true" />
+      <created>1750060353880</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1750060353880</updated>
+    </task>
+    <task id="LOCAL-00023" summary="feat: add toast notifications for error handling and update availability in App component">
+      <option name="closed" value="true" />
+      <created>1750060613659</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1750060613659</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,6 +305,9 @@
     <MESSAGE value="fix: handle undefined chromeArgs and update package.json with new dependencies" />
     <MESSAGE value="chore: update yarn.lock to remove unused dependencies and adjust version ranges" />
     <MESSAGE value="feat: integrate react-hot-toast for user notifications in ConfigPage" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: integrate react-hot-toast for user notifications in ConfigPage" />
+    <MESSAGE value="fix: streamline dependency installation in release workflow and update workspace.xml task details" />
+    <MESSAGE value="fix: simplify dependency installation step in release workflow" />
+    <MESSAGE value="feat: add toast notifications for error handling and update availability in App component" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add toast notifications for error handling and update availability in App component" />
   </component>
 </project>
