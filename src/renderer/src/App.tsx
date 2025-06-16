@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { notify } from './components/ToastProvider';
 
 // Define types for buttons
 interface ButtonConfig {
@@ -46,6 +47,7 @@ function App(): React.JSX.Element {
       } catch (err) {
         console.error('Failed to load configuration:', err);
         setError('Failed to load configuration');
+        notify.error('Failed to load configuration');
       } finally {
         setIsLoading(false);
       }
@@ -68,6 +70,17 @@ function App(): React.JSX.Element {
     window.api.onUpdateAvailable((info) => {
       console.log('Update available:', info);
       setUpdateAvailable(info);
+      notify.success(`Update available: v${info.version}`);
+    });
+
+    window.api.onUpdateProgress((progressObj) => {
+      console.log(`Download progress: ${progressObj.percent}%`);
+      // We don't show a toast for every progress update as it would be too noisy
+    });
+
+    window.api.onUpdateDownloaded((info) => {
+      console.log('Update downloaded:', info);
+      notify.success(`Update downloaded: v${info.version}. It will be installed when you restart the app.`);
     });
 
     return () => {
@@ -90,6 +103,7 @@ function App(): React.JSX.Element {
       } catch (err) {
         console.error('Failed to load background image:', err);
         setBackgroundImageDataUrl("");
+        notify.error('Failed to load background image');
       }
     };
 
@@ -118,6 +132,7 @@ function App(): React.JSX.Element {
         setImgDataUrls(Object.fromEntries(entries));
       } catch (err) {
         console.error('Failed to load button images:', err);
+        notify.error('Failed to load some button images');
       }
     };
 
@@ -125,7 +140,7 @@ function App(): React.JSX.Element {
   }, [buttons]);
 
   // Handle opening links in external browser
-  const handleOpenLink = useCallback((link: string) => {
+  const handleOpenLink = useCallback((link: string, label: string) => {
     if (!link) {
       console.warn('Attempted to open empty link');
       return;
@@ -134,7 +149,8 @@ function App(): React.JSX.Element {
     try {
       window.open(link, '_blank');
     } catch (err) {
-      console.error('Failed to open link:', err);
+      console.error(`Failed to open link ${link}:`, err);
+      notify.error(`Failed to open ${label || 'link'}`);
     }
   }, []);
 
@@ -150,8 +166,14 @@ function App(): React.JSX.Element {
   // Show error state
   if (error) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen gap-4">
         <div className="text-xl text-red-500">{error}</div>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -163,11 +185,14 @@ function App(): React.JSX.Element {
           src={backgroundImageDataUrl}
           className="w-full h-full object-cover absolute top-0 left-0 -z-10"
           alt="Background"
-          onError={() => setBackgroundImageDataUrl("")}
+          onError={() => {
+            setBackgroundImageDataUrl("");
+            notify.error('Failed to load background image');
+          }}
         />
       )}
 
-      {/* Update notification */}
+      {/* Update notification banner (complementary to the toast notification) */}
       {updateAvailable && (
         <div className="fixed top-4 right-4 bg-blue-500 text-white p-3 rounded-md shadow-lg z-50">
           <p className="font-medium">Update available: v{updateAvailable.version}</p>
@@ -177,27 +202,41 @@ function App(): React.JSX.Element {
 
       <div className="flex flex-col items-center mt-8">
         <div className="flex flex-wrap gap-4 justify-center items-center max-w-6xl absolute left-1/2 -translate-x-1/2" style={{ bottom: '2rem', position: 'fixed' }}>
-          {buttons.map((btn, idx) => (
-            <div key={idx} className="flex flex-col items-center">
-              <button
-                className="border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
-                style={{ width: 168, height: 168, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                onClick={() => handleOpenLink(btn.link)}
-                aria-label={btn.label}
-              >
-                <img
-                  src={imgDataUrls[btn.img] || ''}
-                  alt={btn.label}
-                  className="w-full h-full object-contain rounded-lg"
-                  onError={(e) => {
-                    // Show a placeholder on image error
-                    e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLCBzYW5zLXNlcmlmIiBmaWxsPSIjOTk5Ij5JbWFnZSBub3QgZm91bmQ8L3RleHQ+PC9zdmc+';
-                  }}
-                />
-              </button>
-              <span className="text-sm mt-1 text-center font-medium">{btn.label}</span>
+          {buttons.length === 0 ? (
+            <div className="text-center text-gray-400">
+              <p>No quick links added yet.</p>
+              <p className="text-sm mt-2">
+                <button
+                  className="underline hover:text-blue-500"
+                  onClick={() => navigate('/config')}
+                >
+                  Go to config
+                </button> to add some buttons.
+              </p>
             </div>
-          ))}
+          ) : (
+            buttons.map((btn, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <button
+                  className="border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
+                  style={{ width: 168, height: 168, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  onClick={() => handleOpenLink(btn.link, btn.label)}
+                  aria-label={btn.label}
+                >
+                  <img
+                    src={imgDataUrls[btn.img] || ''}
+                    alt={btn.label}
+                    className="w-full h-full object-contain rounded-lg"
+                    onError={(e) => {
+                      // Show a placeholder on image error
+                      e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLCBzYW5zLXNlcmlmIiBmaWxsPSIjOTk5Ij5JbWFnZSBub3QgZm91bmQ8L3RleHQ+PC9zdmc+';
+                    }}
+                  />
+                </button>
+                <span className="text-sm mt-1 text-center font-medium">{btn.label}</span>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </>
