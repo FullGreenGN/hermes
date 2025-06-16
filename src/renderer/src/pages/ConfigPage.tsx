@@ -1,24 +1,16 @@
 import { useState, useEffect, useRef, FormEvent } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+// Import components
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { useNavigate } from "react-router-dom";
-import Versions from "@/components/Versions";
 import { Checkbox } from "@/components/ui/checkbox";
+import Versions from "@/components/Versions";
+// Import utilities
+import { useNavigate } from "react-router-dom";
+import { notify } from "@/components/ToastProvider";
 
 // Define types for button configuration
 interface ButtonConfig {
@@ -178,6 +170,7 @@ export default function ConfigPage() {
 
         saveButtonsToConfig(newButtons);
         setModalOpen(false);
+        notify.success('Button saved successfully');
       } catch (err) {
         console.error('Failed to save button:', err);
         setError('Failed to save button');
@@ -188,6 +181,7 @@ export default function ConfigPage() {
 
   const handleRemove = (idx: number) => {
     saveButtonsToConfig(buttons.filter((_, i) => i !== idx));
+    notify.success('Button removed successfully');
   };
 
   const handleButtonImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -243,6 +237,7 @@ export default function ConfigPage() {
 
       if (success) {
         setSaved(true);
+        notify.success('Configuration saved successfully');
         setTimeout(() => setSaved(false), 2000);
       } else {
         setError("Failed to save configuration");
