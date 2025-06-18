@@ -39,7 +39,7 @@ appImage:
   artifactName: ${name}.${ext}
 npmRebuild: false
 publish:
-  provider: generic
-  url: https://example.com/auto-updates
+  provider: github
+  url: https://github.com/fullgreengn/hermes
 electronDownload:
   mirror: https://npmmirror.com/mirrors/electron/
