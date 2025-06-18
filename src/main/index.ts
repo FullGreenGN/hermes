@@ -95,6 +95,7 @@ class MainApp {
       fullscreen,
       autoHideMenuBar: true,
       kiosk: true,
+      resizable: false,
       ...(process.platform === 'linux' ? { icon } : {}),
       webPreferences: {
         nodeIntegration: true,
@@ -127,7 +128,9 @@ class MainApp {
             if (this.mainWindow) {
               this.mainWindow.show()
               this.mainWindow.focus()
-              this.mainWindow.setFullScreen(!!this.config.get('fullscreen', false))
+              this.mainWindow.setFullScreen(true)
+              this.mainWindow.maximize()
+              this.mainWindow.kiosk = true
             }
           })
         } else {

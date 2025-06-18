@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: enable kiosk mode in application and bump version to 0.1.1">
-      <change beforePath="$PROJECT_DIR$/dev-app-update.yml" beforeDir="false" afterPath="$PROJECT_DIR$/dev-app-update.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/electron-builder.yml" beforeDir="false" afterPath="$PROJECT_DIR$/electron-builder.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +111,7 @@
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
       <workItem from="1750053088979" duration="7982000" />
-      <workItem from="1750237710511" duration="1385000" />
+      <workItem from="1750237710511" duration="2732000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -361,7 +361,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750241836808</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="feat: enable kiosk mode in application and bump version to 0.1.1">
+      <option name="closed" value="true" />
+      <created>1750242015335</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1750242015335</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
