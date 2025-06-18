@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="fix: update release configuration to use GitHub provider for auto-updates">
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/index.ts" afterDir="false" />
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: enable kiosk mode in application and bump version to 0.1.1">
+      <change beforePath="$PROJECT_DIR$/dev-app-update.yml" beforeDir="false" afterPath="$PROJECT_DIR$/dev-app-update.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/electron-builder.yml" beforeDir="false" afterPath="$PROJECT_DIR$/electron-builder.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +111,7 @@
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
       <workItem from="1750053088979" duration="7982000" />
-      <workItem from="1750237710511" duration="1194000" />
+      <workItem from="1750237710511" duration="1385000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -353,14 +353,21 @@
       <option name="project" value="LOCAL" />
       <updated>1750241733007</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="feat: enable kiosk mode in application and bump version to 0.1.1">
+      <option name="closed" value="true" />
+      <created>1750241836808</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1750241836808</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update release configuration and adjust application identifiers" />
     <MESSAGE value="update layout and styling for buttons in App component; adjust work item durations" />
     <MESSAGE value="update layout and styling for buttons in App component; increment version to 0.0.4" />
     <MESSAGE value="update image loading logic in ConfigPage component; adjust layout and work item durations" />
@@ -385,6 +392,7 @@
     <MESSAGE value="fix: simplify artifact naming in electron-builder configuration" />
     <MESSAGE value="chore: bump version to 0.1.0 and update README badge" />
     <MESSAGE value="fix: update release configuration to use GitHub provider for auto-updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: update release configuration to use GitHub provider for auto-updates" />
+    <MESSAGE value="feat: enable kiosk mode in application and bump version to 0.1.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: enable kiosk mode in application and bump version to 0.1.1" />
   </component>
 </project>
