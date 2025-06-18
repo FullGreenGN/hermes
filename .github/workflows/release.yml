@@ -39,7 +39,8 @@ jobs:
             npm install
           else
             # macOS - regular install should work
-            npm ci
+            rm -rf node_modules package-lock.json
+            npm install
           fi
 
       - name: Build app
