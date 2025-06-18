@@ -94,6 +94,7 @@ class MainApp {
       show: false,
       fullscreen,
       autoHideMenuBar: true,
+      kiosk: true,
       ...(process.platform === 'linux' ? { icon } : {}),
       webPreferences: {
         nodeIntegration: true,

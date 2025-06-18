@@ -5,7 +5,7 @@
   <br>
   <h3>Modern Electron-based Application Launcher with Custom UI</h3>
 
-  ![Version](https://img.shields.io/badge/version-0.1.0-blue)
+  ![Version](https://img.shields.io/badge/version-0.1.1-blue)
   ![License](https://img.shields.io/badge/license-MIT-green)
   ![Electron](https://img.shields.io/badge/electron-35.1.5-teal)
   ![Platform](https://img.shields.io/badge/platform-Windows%20|%20macOS%20|%20Linux-lightgrey)
