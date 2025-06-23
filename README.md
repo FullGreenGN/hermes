@@ -1,7 +1,7 @@
 # Hermes
 
 <div align="center">
-  <img src="./resources/icon.png" alt="Hermes Logo" width="200">
+  <img src="./resources/polaris.png" alt="Hermes Logo" width="400">
   <br>
   <h3>Modern Electron-based Application Launcher with Custom UI</h3>
 

@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: enable kiosk mode in application and bump version to 0.1.1">
+    <list default="true" id="e98cb758-9b2e-4230-ac3c-9cccb777bd25" name="Changes" comment="feat: update application to disable resizing in kiosk mode and bump version to 0.1.2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,18 +21,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "FullGreenGN"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;FullGreenGN&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/fullgreengn/hermes.git",
-    "accountId": "25269ad5-2491-4f9b-9dc7-a6e766d7cc37"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/fullgreengn/hermes.git&quot;,
+    &quot;accountId&quot;: &quot;25269ad5-2491-4f9b-9dc7-a6e766d7cc37&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -45,23 +44,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.build:win.executor": "Run",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Volumes/FullGreen/Development/Workspaces/Auchan/hermes/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.build:win.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Volumes/FullGreen/Development/Workspaces/Auchan/hermes/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/renderer/src/components/ui" />
@@ -111,7 +110,9 @@
       <workItem from="1749712103146" duration="101000" />
       <workItem from="1749712652585" duration="1723000" />
       <workItem from="1750053088979" duration="7982000" />
-      <workItem from="1750237710511" duration="2732000" />
+      <workItem from="1750237710511" duration="3626000" />
+      <workItem from="1750315276951" duration="7000" />
+      <workItem from="1750661380394" duration="1208000" />
     </task>
     <task id="LOCAL-00001" summary="add background image support and configuration options">
       <option name="closed" value="true" />
@@ -369,14 +370,21 @@
       <option name="project" value="LOCAL" />
       <updated>1750242015335</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="feat: update application to disable resizing in kiosk mode and bump version to 0.1.2">
+      <option name="closed" value="true" />
+      <created>1750249387794</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1750249387794</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="update layout and styling for buttons in App component; adjust work item durations" />
     <MESSAGE value="update layout and styling for buttons in App component; increment version to 0.0.4" />
     <MESSAGE value="update image loading logic in ConfigPage component; adjust layout and work item durations" />
     <MESSAGE value="implement auto updater functionality; add event listeners for update availability, progress, and download completion" />
@@ -401,6 +409,7 @@
     <MESSAGE value="chore: bump version to 0.1.0 and update README badge" />
     <MESSAGE value="fix: update release configuration to use GitHub provider for auto-updates" />
     <MESSAGE value="feat: enable kiosk mode in application and bump version to 0.1.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: enable kiosk mode in application and bump version to 0.1.1" />
+    <MESSAGE value="feat: update application to disable resizing in kiosk mode and bump version to 0.1.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: update application to disable resizing in kiosk mode and bump version to 0.1.2" />
   </component>
 </project>
